@@ -37,7 +37,7 @@ const filteredProducts = productos.filter((producto)=> producto.category === cat
 
 return (
   <Flex>
-      <div key={productos.id}>
+      <div>
       <ItemList
       productos={filteredProducts}
       />

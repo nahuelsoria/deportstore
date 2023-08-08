@@ -2,7 +2,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom';
 
 const ItemDetail = ({productos}) => {
-const {id} = useParams
+const {id} = useParams()
 const filteredProducts=productos.filter((producto) => producto.id == id)
 
 return (
@@ -12,6 +12,7 @@ return (
   <div key={p.id}>
     <p>{p.name}</p>
     <p>{p.description}</p>
+    <p>${p.price}</p>
     </div>
 )
 })}
