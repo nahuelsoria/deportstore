@@ -1,26 +1,54 @@
-import { Box, Flex, Spacer } from '@chakra-ui/react'
+import { Box, Flex, Spacer, Button, Center } from '@chakra-ui/react'
 import {useState} from "react"
+import { useContext } from 'react';
+import {CartContext} from '../context/ShoppingCartContext';
 
-const ItemCount = () => {
+const ItemCount = ({id, price, name, image}) => {
 
-const sumar = () => {
+  console.log(id)
+  console.log(price)
+  console.log(name)
+const [count, setCount] = useState(1)
+const {cart, setCart} = useContext(CartContext)
+
+const addQty = () => {
     setCount(count+1)
 }    
 
-const restar = () => {
+const substractQty = () => {
     if(count!=0){
     setCount(count-1)
     }
 }
 
-  const [count, setCount] = useState(0);
+const addToCart = (item, quantity) => {
+    const addedProduct = {id, name, count, price, image}
+    setCart((prev) => [...prev, addedProduct]);
+
+    const newCart = [...cart]
+    console.log(newCart)
+    const isInCart = newCart.find((product)=> product.id === addedProduct.id)
+    if(isInCart){
+      isInCart.count = isInCart.count + count
+      setCart(newCart)
+    }else{
+      setCart([...cart, addedProduct])
+    }
+    console.log(isInCart)
+}
+
+
+
 
   return (
     <Flex>
       <Box>
-        <button onClick={restar}>-</button>
+        <Center>
+        <Button onClick={substractQty}>-</Button>
         <p>{count}</p>
-        <button onClick={sumar}>+</button>
+        <Button onClick={addQty}>+</Button>
+        </Center>
+        <Button onClick={addToCart}>Agregar al carrito</Button>
       </Box>
     </Flex>
   );

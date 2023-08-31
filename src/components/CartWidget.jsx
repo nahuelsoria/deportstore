@@ -1,9 +1,13 @@
 import { Flex, Box } from '@chakra-ui/react'
 import React from 'react'
-import Cart from './Cart';
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { CartContext } from '../context/ShoppingCartContext';
 
 const CartWidget = () => {
+
+  const {totalItems} = useContext(CartContext)
+
   return (
     <Flex>
       <Link to="/Cart">
@@ -12,7 +16,7 @@ const CartWidget = () => {
       </Box>
       </Link>
       <Box>
-        <p>0</p>
+        <p>{totalItems}</p>
       </Box>
     </Flex>
   );
