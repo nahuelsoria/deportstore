@@ -21,15 +21,8 @@ const totalCart = cart.forEach(p => {
 
 const totalItems = cart.reduce((total, product) => total + product.count, 0);
 
-const removeProduct = (product) =>{
-  const cartUpdated = cart.filter((prod) => prod.id !== product.id);
-  console.log(product.id)
-  console.log(cartUpdated)
-  setCart(cartUpdated)
-}
-
     return(
-        <CartContext.Provider value={{cart, setCart, clearCart, totalItems, totalFinal, removeProduct}}>
+        <CartContext.Provider value={{cart, setCart, clearCart, totalItems, totalFinal}}>
             {children}
         </CartContext.Provider>
     )

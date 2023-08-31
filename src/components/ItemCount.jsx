@@ -1,7 +1,8 @@
-import { Box, Flex, Spacer, Button, Center } from '@chakra-ui/react'
+import { Box, Flex, Spacer, Button, Center, Alert, AlertIcon, useToast } from '@chakra-ui/react'
 import {useState} from "react"
 import { useContext } from 'react';
 import {CartContext} from '../context/ShoppingCartContext';
+
 
 const ItemCount = ({id, price, name, image}) => {
 
@@ -21,6 +22,8 @@ const substractQty = () => {
     }
 }
 
+
+
 const addToCart = (item, quantity) => {
     const addedProduct = {id, name, count, price, image}
     setCart((prev) => [...prev, addedProduct]);
@@ -37,9 +40,6 @@ const addToCart = (item, quantity) => {
     console.log(isInCart)
 }
 
-
-
-
   return (
     <Flex>
       <Box>
@@ -48,7 +48,9 @@ const addToCart = (item, quantity) => {
         <p>{count}</p>
         <Button onClick={addQty}>+</Button>
         </Center>
-        <Button onClick={addToCart}>Agregar al carrito</Button>
+        <Button onClick={addToCart} >
+          Agregar al carrito
+          </Button>
       </Box>
     </Flex>
   );
