@@ -24,7 +24,7 @@ const ItemCount = ({ id, price, name, image }) => {
     setCart((prev) => [...prev, addedProduct]);
 
     const newCart = [...cart];
-    console.log(newCart);
+    //console.log(newCart);
     const isInCart = newCart.find((product) => product.id === addedProduct.id);
     if (isInCart) {
       isInCart.count = isInCart.count + count;
