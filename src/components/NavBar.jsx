@@ -8,28 +8,28 @@ import { Link} from "react-router-dom";
 const NavBar = () => {
   
   return (
-    <Flex>
-      <Menu>
-        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+    <Flex alignItems='center'  display='flex' as="b" borderColor='skyblue' bg='skyblue'>
+      <Menu alignItems='center' display='flex' as='b'>
+        <MenuButton fontSize='3xl'  display='flex' alignItems='center' borderRadius='md' borderColor='skyblue' bg='skyblue' as={Button} rightIcon={<ChevronDownIcon />}>
           Categorias
         </MenuButton>
-        <MenuList>
-          <MenuItem>
+        <MenuList as='b' borderColor='skyblue' bg='skyblue'>
+          <MenuItem fontSize='2xl' as='b' borderColor='skyblue' bg='skyblue'>
           <Link to={`/`}>
           Todos los productos
           </Link>
           </MenuItem>
-          <MenuItem>
+          <MenuItem fontSize='2xl' as='b' borderColor='skyblue' bg='skyblue'>
           <Link to={`/category/${'Accesorios'}`}>
           Accesorios
           </Link>
           </MenuItem>
-          <MenuItem>
+          <MenuItem fontSize='2xl' as='b' borderColor='skyblue' bg='skyblue'>
           <Link to={`/category/${'Mochilas'}`}>
             Mochilas
             </Link>
             </MenuItem>
-          <MenuItem>
+          <MenuItem fontSize='2xl' as='b' borderColor='skyblue' bg='skyblue'>
           <Link to={`/category/${'Pelotas'}`}>
           Pelotas
           </Link>
@@ -38,7 +38,7 @@ const NavBar = () => {
       </Menu>
       <Spacer />
       <Link to={"/"} >
-      <Box p="2" bg="black" color="white">
+      <Box fontSize='4xl' as="b" display='flex' borderWidth='32px' borderRadius='lg' borderColor='skyblue' bg='skyblue' p="2">
         DeportStore
       </Box>
       </Link>

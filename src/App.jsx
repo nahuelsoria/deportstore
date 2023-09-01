@@ -7,6 +7,8 @@ import ItemDetailContainer from './components/ItemDetailContainer';
 import ShoppingCartContext from './context/ShoppingCartContext';
 import "./index.css"
 import SendOrder from './components/SendOrder';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 const App = () => {
   return (
@@ -21,6 +23,7 @@ const App = () => {
         <Route exact path="/sendorder" element={<SendOrder />}/>
       </Routes>
       </ShoppingCartContext>
+      <ToastContainer />
     </BrowserRouter>
   );
 }

@@ -4,7 +4,20 @@ import { useState } from 'react'
 import { useContext } from 'react';
 import { CartContext } from '../context/ShoppingCartContext';
 
-
+const toastBuy = () => {
+  Toastify({
+    text: "Compra realizada! Guarda tu numero de orden 😊",
+    duration: 3000,
+    close: true,
+    gravity: "bottom", // `top` or `bottom`
+    position: "right", // `left`, `center` or `right`
+    stopOnFocus: true, // Prevents dismissing of toast on hover
+    style: {
+      background: "linear-gradient(to right, #00b09b, #96c93d)",
+    },
+    onClick: function(){} // Callback after click
+  }).showToast();
+}
 
 const SendOrder = () => {
 const {cart, clearCart, totalFinal} = useContext(CartContext);
@@ -31,13 +44,13 @@ const {cart, clearCart, totalFinal} = useContext(CartContext);
 
   return (
     <div>
-        <SimpleGrid columns={1}>
+        <SimpleGrid display='flex' borderWidth='20px' borderRadius='lg' borderColor='skyblue' bg='skyblue' columns={1}>
         <Center margin={20}>
-      <Heading>Complete el formulario de contacto para finalizar su compra!</Heading>
-      </Center>
+      <Heading display='flex' borderWidth='20px' borderRadius='lg' borderColor='skyblue' bg='skyblue'>Complete el formulario de contacto para finalizar su compra!</Heading>
+      </Center >
       <form onSubmit={handleSubmit}>
-        <Center>
-      <Text>Nombre y Apellido:</Text>
+        <Center >
+      <Text fontSize='xl'>Nombre y Apellido:</Text>
       </Center>
       <Center>
         <input
@@ -47,7 +60,7 @@ const {cart, clearCart, totalFinal} = useContext(CartContext);
         />
         </Center>
         <Center>
-      <Text >Telefono:</Text>
+      <Text fontSize='xl'>Telefono:</Text>
       </Center>
       <Center>
         <input
@@ -57,7 +70,7 @@ const {cart, clearCart, totalFinal} = useContext(CartContext);
         />
         </Center>
         <Center>
-      <Text >E-mail:</Text>
+      <Text fontSize='xl'>E-mail:</Text>
       </Center>
       <Center>
         <input
@@ -67,7 +80,7 @@ const {cart, clearCart, totalFinal} = useContext(CartContext);
         />
         </Center>
         <Center>
-      <Text >Confirmar e-mail:</Text>
+      <Text fontSize='xl'>Confirmar e-mail:</Text>
       </Center>
       <Center>
         <input
@@ -77,16 +90,14 @@ const {cart, clearCart, totalFinal} = useContext(CartContext);
         />
         </Center>
         <Center>
-            {email===email2 && email!="" && email2!=""? <Button margin={10} type="submit">Realizar compra</Button> : <Heading as='h4' size='md' margin={10}> Ingresa todos los datos para realizar la compra!</Heading> }
+            {email===email2 && email!="" && email2!=""? <Button  onClick={toastBuy} margin={10} type="submit">Realizar compra</Button> : <Heading as='h4' size='md' margin={10}> Ingresa todos los datos para realizar la compra!</Heading> }
         </Center>
       </form>
       </SimpleGrid>
-      <Center margin={10}>
-      <Heading as='h4' size='md' margin={10}>Numero de orden:</Heading>
-      </Center>
+      <Center borderWidth='20px' borderRadius='lg' borderColor='skyblue' bg='skyblue' margin={10}>
+      <Heading as='h4' size='xl' margin={5}>Numero de orden:</Heading>
       <br/>
-      <Center>
-        <Heading as='h4' size='md' margin={10}>{orderId}</Heading>
+        <Heading as='h4' size='xl' margin={5}>{orderId}</Heading>
         </Center>
       
     </div>

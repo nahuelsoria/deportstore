@@ -5,15 +5,14 @@ import { useContext } from 'react';
 import { CartContext } from '../context/ShoppingCartContext';
 
 const CartWidget = () => {
-
-  const {totalItems} = useContext(CartContext)
+  const { totalItems } = useContext(CartContext);
 
   return (
-    <Flex>
+    <Flex as="b" display="flex" fontSize="3xl" bg="skyblue" margin={10}>
       <Link to="/Cart">
-      <Box>
-      <img src="./assets/cart.svg" width="30" height="30"/>
-      </Box>
+        <Box>
+          <img src="./assets/cart.svg" width="50" height="50" />
+        </Box>
       </Link>
       <Box>
         <p>{totalItems}</p>
@@ -22,4 +21,4 @@ const CartWidget = () => {
   );
 };
 
-export default CartWidget
+export default CartWidget;

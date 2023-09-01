@@ -31,25 +31,25 @@ return (
   {filteredProducts.map((p)=> {
     return(
   <div key={p.id}>
-    <Center>
+    <Center margin={10}>
     <Flex>
-      <Box>
+      <Box borderWidth='2px' borderRadius='lg'>
       <Center>
-    <Image src={p.image} width="250" height="250"></Image>
+    <Image src={p.image} width="250" height="250" margin={10}></Image>
     </Center>
     <Center>
-    <Heading>{p.name}</Heading>
+    <Heading margin={3}>{p.name}</Heading>
     </Center>
     <Center>
-    <Text>{p.description}</Text>
+    <Text margin={3}>{p.description}</Text>
     </Center>
     <Center>
-    <Text>{p.category}</Text>
+    <Text margin={3}>Categoria: {p.category}</Text>
     </Center>
     <Center>
-    <Text>${p.price}</Text>
+    <Text margin={3}>${p.price}</Text>
     </Center>
-    <Center>
+    <Center margin={3}>
     <ItemCount key={p.id}
             id={p.id}
             image={p.image}
