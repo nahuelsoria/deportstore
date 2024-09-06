@@ -1,31 +1,33 @@
-import {React, useState, useEffect} from 'react'
-import { useParams } from 'react-router-dom'
-import ItemDetail from './ItemDetail'
-import {collection, getDocs, getFirestore} from 'firebase/firestore'
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import ItemDetail from './ItemDetail';
+import { collection, getDocs, getFirestore } from 'firebase/firestore';
 
+// Componente ItemDetailContainer: Maneja la obtención y presentación de detalles de un producto
 const ItemDetailContainer = () => {
+  const { id } = useParams();
+  const [productos, setProductos] = useState([]);
 
-const {id} = useParams()
+  useEffect(() => {
+    const obtenerProductos = async () => {
+      try {
+        const db = getFirestore();
+        const coleccionProductos = collection(db, "Artículos Deportivos");
+        const snapshot = await getDocs(coleccionProductos);
+        const productosObtenidos = snapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setProductos(productosObtenidos);
+      } catch (error) {
+        console.error("Error al obtener los productos:", error);
+      }
+    };
 
-const [data, setData] = useState([])
-useEffect(()=> {
-  const db = getFirestore();
-  const productCollection = collection(db, "Artículos Deportivos");
-  getDocs(productCollection).then((querySnapshot)=>{
-    const productos = querySnapshot.docs.map((doc)=>({
-      ...doc.data(),
-      id: doc.id,
-    }));
-    setData(productos);
-  })
-},[])
+    obtenerProductos();
+  }, []);
 
+  return <ItemDetail productos={productos} />;
+};
 
-  return (
-        <ItemDetail
-    productos={data}
-    />
-  )
-}
-
-export default ItemDetailContainer
+export default ItemDetailContainer;

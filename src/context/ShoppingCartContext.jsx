@@ -1,36 +1,63 @@
-import {createContext, useState} from 'react'
+import { createContext, useState, useCallback, useMemo } from 'react'
 
+// Creamos el contexto del carrito
 export const CartContext = createContext(null)
 
-export const ShoppingCartProvider = ({children})=>{
+export const ShoppingCartProvider = ({ children }) => {
+  // Estado para almacenar los items del carrito
+  const [cart, setCart] = useState([])
 
-  const  [cart, setCart] = useState([])
- // console.log(cart)
+  // Función para limpiar el carrito
+  const clearCart = useCallback(() => {
+    setCart([])
+  }, [])
 
-const clearCart = () =>{
-  setCart([]);
-}
+  // Función para agregar un producto al carrito
+  const addToCart = useCallback((product, quantity) => {
+    setCart(prevCart => {
+      const existingProductIndex = prevCart.findIndex(item => item.id === product.id)
+      if (existingProductIndex !== -1) {
+        // Si el producto ya existe, actualizamos la cantidad
+        return prevCart.map((item, index) => 
+          index === existingProductIndex 
+            ? { ...item, count: item.count + quantity }
+            : item
+        )
+      }
+      // Si es un nuevo producto, lo añadimos al carrito
+      return [...prevCart, { ...product, count: quantity }]
+    })
+  }, [])
 
-let totalFinal = 0
+  // Función para eliminar un producto del carrito
+  const removeFromCart = useCallback((productId) => {
+    setCart(prevCart => prevCart.filter(item => item.id !== productId))
+  }, [])
 
-const totalCart = cart.forEach(p => {
-  totalFinal = cart.reduce((acc, product) => {
-    return acc + (product.price * product.count);
-  }, 0);
-});
+  // Calculamos el total del carrito y el total de items
+  const { totalFinal, totalItems } = useMemo(() => 
+    cart.reduce((acc, { price, count }) => ({
+      totalFinal: acc.totalFinal + (price * count),
+      totalItems: acc.totalItems + count
+    }), { totalFinal: 0, totalItems: 0 }),
+  [cart])
 
-const totalItems = cart.reduce((total, product) => total + product.count, 0);
+  // Creamos el objeto de valor para el contexto
+  const contextValue = useMemo(() => ({
+    cart,
+    setCart,
+    clearCart,
+    addToCart,
+    removeFromCart,
+    totalItems,
+    totalFinal
+  }), [cart, clearCart, addToCart, removeFromCart, totalItems, totalFinal])
 
-    return(
-        <CartContext.Provider value={{cart, setCart, clearCart, totalItems, totalFinal}}>
-            {children}
-        </CartContext.Provider>
-    )
-}
-
-const ShoppingCartContext = () => {
+  // Proveemos el contexto a los componentes hijos
   return (
-    <div>ShoppingCartContext</div>
+    <CartContext.Provider value={contextValue}>
+      {children}
+    </CartContext.Provider>
   )
 }
 

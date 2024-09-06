@@ -1,72 +1,87 @@
+// Importaciones necesarias
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import {React, useContext, useEffect, useState} from 'react'
+import { React, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { Image, Heading, Text, Flex, Box, Center } from '@chakra-ui/react';
+import { Image, Heading, Text, Flex, Box, Center, VStack, Badge, Spinner } from '@chakra-ui/react';
 import ItemCount from './ItemCount'
-import { CartContext } from '../context/ShoppingCartContext';
 
+// Componente ItemDetail: Muestra los detalles de un producto específico
+const ItemDetail = ({ productos }) => {
+  // Obtenemos el id del producto de los parámetros de la URL
+  const { id } = useParams()
 
-const ItemDetail = ({productos}) => {
-const {id} = useParams()
+  // Estado para almacenar la información del producto
+  const [producto, setProducto] = useState(null);
 
-const [producto, setProducto] = useState([]);
+  // Efecto para cargar los datos del producto desde Firestore
+  useEffect(() => {
+    const fetchProducto = async () => {
+      const db = getFirestore();
+      const productRef = doc(db, "Artículos Deportivos", id);
 
-useEffect(() => {
-  const db = getFirestore();
-  const productRef = doc(db, "Artículos Deportivos", `${id}`);
+      try {
+        const snapshot = await getDoc(productRef);
+        if (snapshot.exists()) {
+          setProducto({ id: snapshot.id, ...snapshot.data() });
+        } else {
+          console.log("No se encontró el documento");
+        }
+      } catch (error) {
+        console.error("Error al obtener el producto:", error);
+      }
+    };
 
-  getDoc(productRef).then((snapshot)=>{
-    if(snapshot.exists()){
-      setProducto(snapshot.data());
-    }else{
-      console.log("No hay documento");
-    }
-  })
-},[]);
+    fetchProducto();
+  }, [id]);
 
-const filteredProducts=productos.filter((producto) => producto.id == id)
+  // Si el producto aún no se ha cargado, mostramos un spinner
+  if (!producto) {
+    return (
+      <Center height="100vh">
+        <Spinner size="xl" color="blue.500" thickness="4px" />
+      </Center>
+    );
+  }
 
-return (
-  <div>
-  {filteredProducts.map((p)=> {
-    return(
-  <div key={p.id}>
+  return (
     <Center margin={10}>
-    <Flex>
-      <Box borderWidth='2px' borderRadius='lg'>
-      <Center>
-    <Image src={p.image} width="250" height="250" margin={10}></Image>
+      <Box 
+        borderWidth='1px' 
+        borderRadius='lg' 
+        overflow='hidden' 
+        boxShadow='2xl' 
+        p={6} 
+        maxW='lg'
+        bg='white'
+      >
+        <VStack spacing={6} align='stretch'>
+          <Image 
+            src={producto.image} 
+            alt={producto.name} 
+            objectFit='cover'
+            borderRadius='md'
+            boxSize='300px'
+            mx='auto'
+          />
+          <VStack align='start' spacing={3}>
+            <Heading as="h2" size="xl" color='blue.600'>{producto.name}</Heading>
+            <Text fontSize="md" color='gray.600'>{producto.description}</Text>
+            <Badge colorScheme='blue'>{producto.category}</Badge>
+            <Text fontSize="2xl" fontWeight="bold" color='green.500'>${producto.price.toFixed(2)}</Text>
+          </VStack>
+          <Box>
+            <ItemCount
+              id={producto.id}
+              image={producto.image}
+              name={producto.name}
+              description={producto.description}
+              price={producto.price}
+            />
+          </Box>
+        </VStack>
+      </Box>
     </Center>
-    <Center>
-    <Heading margin={3}>{p.name}</Heading>
-    </Center>
-    <Center>
-    <Text margin={3}>{p.description}</Text>
-    </Center>
-    <Center>
-    <Text margin={3}>Categoria: {p.category}</Text>
-    </Center>
-    <Center>
-    <Text margin={3}>${p.price}</Text>
-    </Center>
-    <Center margin={3}>
-    <ItemCount key={p.id}
-            id={p.id}
-            image={p.image}
-            name={p.name}
-            description={p.description}
-            price={p.price}/>
-    </Center>
-    </Box>
-    </Flex>
-    </Center>
-    </div>
-)
-})}
-
-
-</div>
-)
+  )
 }
 
 export default ItemDetail

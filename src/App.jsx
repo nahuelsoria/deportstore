@@ -1,29 +1,29 @@
 import React from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import NavBar from './components/NavBar'
-import { BrowserRouter, Routes,Route } from 'react-router-dom';
 import Cart from './components/Cart';
 import ItemListContainer from './components/ItemListContainer';
 import ItemDetailContainer from './components/ItemDetailContainer';
-import ShoppingCartContext from './context/ShoppingCartContext';
-import "./index.css"
 import SendOrder from './components/SendOrder';
-import { ToastContainer, toast } from 'react-toastify';
-
+import { ShoppingCartProvider } from './context/ShoppingCartContext';
+import "./index.css"
 
 const App = () => {
   return (
     <BrowserRouter>
-    <ShoppingCartContext>
-      <NavBar />
-      <Routes>
-        <Route exact path="/" element={<ItemListContainer />} />          
-        <Route exact path="/cart" element={<Cart />}/>
-        <Route exact path="/category/:category" element={<ItemListContainer />}/>
-        <Route exact path="/item/:id" element={<ItemDetailContainer />}/>
-        <Route exact path="/sendorder" element={<SendOrder />}/>
-      </Routes>
-      </ShoppingCartContext>
-      <ToastContainer />
+      <ShoppingCartProvider>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<ItemListContainer />} />          
+          <Route path="/cart" element={<Cart />}/>
+          <Route path="/category/:category" element={<ItemListContainer />}/>
+          <Route path="/item/:id" element={<ItemDetailContainer />}/>
+          <Route path="/sendorder" element={<SendOrder />}/>
+        </Routes>
+        <ToastContainer />
+      </ShoppingCartProvider>
     </BrowserRouter>
   );
 }
